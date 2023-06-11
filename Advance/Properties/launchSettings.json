@@ -1,0 +1,8 @@
+{
+  "profiles": {
+    "Advance": {
+      "commandName": "Project",
+      "commandLineArgs": "white\r\nC:\\Users\\ADMIN\\source\\repos\\Advance\\Advance\\bin\\Debug\\net6.0\\7\\white\\tests\\11.txt\r\noutputresult.txt"
+    }
+  }
+}

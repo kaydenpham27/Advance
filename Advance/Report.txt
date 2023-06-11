@@ -1,0 +1,112 @@
+Student Name: Trung Kien Pham
+Student Number: n11388544
+ 
+- Class Program: 
+	+ private static void Main(): get the parameters from the input
+	+ private static bool ParseArguments(): get the PlayerColor, the path to input and output files. 
+	+ private static void Load(): Open stream for input from input file, and ask game to read the contents
+	+ private static void Play(): Play the current game based on the current PlayerColor
+	+ private static void Save(): Open stream for output to output file, and ask game to write the file.
+
+- Class Game:
+	+ 2 fields: PlayerColor and Board representing the Color of current player and the Board state of the game. 
+	+ Constructor: Create a new Game.
+	+ public void Read(): read the contents from the input into the game Board.
+	+ public void Write(): write the current Board into the output file. 
+	+ private bool isCheckMate(): check if current player is being checked (Their General is being targeted). First use FindMoves() function of Piece in each Cell to find possible moves of opponent player.
+	If there is at least one Capture or Shoot move that the ending point is the cell where an ally General is located. Then the current player is being checked. 
+	+ private List<MoveType> FindAllMoves(): find all moves a Player can make using every pieces in a specific Board state. Use FindMoves() function of Piece in each Cell of the board and add the results to a result List<MoveType>.
+	Then use isCheckMate() to filter moves that put ally General in danger, then return legal moves. 
+	+ private (bool, List<MoveType>) MaximizeAdvantage(): work as functionality 6, use FindAllMoves() function to find legal moves for the current player, then try each move and use Board.Evaluate() to decide which move 
+	produces the highest material advantage. Add those moves to the result list. If the current try a move that afterwhich opponent player can not make a move (winning move), immediately returns that move. 
+	+ private (int, List<MoveType>) Predict(): works as functionality 7. This is a recursive function that acts as a small game that each player takes turn to play based on Maximize Advantage() (functionality 6), 
+	this function will look into 3 turns deep to decide which move produces the best material advantage. 
+	+ public void PlayOneTurn(): use above functions to play one turn. 
+
+- Class Board:
+	+ 2 fields: Grid represents for a two-dimension array Cell[9, 9] (9 x 9 Board), Size represents for size of the board.
+	+ Constructor: Create a new Board. 
+	+ public Board Copy(): produce a copy version of a specific Board state.
+	+ public int Evaluate(): evaluate a specific Board state (Increase score for ally pieces according to their value, decrease score for enemy pieces according to their value).
+
+- Class Cell:
+	+ 4 fields: RowNumber and ColNumber represents the coordination of a piece in a Board (x-axis and y-axis is indexed from left to right, top to bottom), PieceType of piece located in the current cell,
+	and Color of that piece.
+	+ Constructor: Create a new cell. 
+	+ void AddPiece(): convert characters from the input into PieceType and Color in current Board.
+
+- Abstract Class PieceType:
+	+ Public abstract char Icon: return Icon of specific Piece. Each PieceType has an icon (in lowercase letter) representing their name (For example: Zombie has icon 'z', General has icon 'g').
+	+ Public abstract int Value: return the Piece's point according to the Instruction PDF.
+	+ Override string ToString(): return the Piece's name.
+	+ Virtual List<MoveType> FindMoves(): using isProtected() function to decide all the possible moves a specific piece can make in a specific Board state. 
+	+ Virtual bool isProtected(): return true if a Piece is protected by an ally Sentinel, else return false.
+
+- Derived Class Zombie from Base Class PieceType:
+	+ Overide ToString(), Icon, FindMoves() and Value() according to how Zombie moves and its value.
+
+- Derived Class Sentinel from Base Class PieceType:
+	+ Overide ToString(), Icon, FindMoves() and Value() according to how Sentinel moves and its value.
+
+- Derived Class Miner from Base Class PieceType:
+	+ Overide ToString(), Icon, FindMoves() and Value() according to how Miner moves and its value.
+	+ Private void OptimizedFindMoves(): Avoid repeating myself by creating a function to find moves in different directions based on parsed in parameters. 
+
+- Derived Class Jester from Base Class PieceType:
+	+ Overide ToString(), Icon, FindMoves() and Value() according to how Jester moves and its value.
+
+- Derived Class General from Base Class PieceType:
+	+ Overide ToString(), Icon, FindMoves() and Value() according to how General moves and its value.
+
+- Derived Class Builder from Base Class PieceType:
+	+ Overide ToString(), Icon, FindMoves() and Value() according to how Builder moves and its value.
+
+- Derived Class Catapult from Base Class PieceType:
+	+ Overide ToString(), Icon, FindMoves() and Value() according to how Catapult moves and its value.
+
+- Derived Class Dragon from Base Class PieceType:
+	+ Overide ToString(), Icon, FindMoves() and Value() according to how Dragon moves and its value.
+	+ Private void OptimizedFindMoves(): Avoid repeating myself by creating a function to find moves in different directions based on parsed in parameters.
+
+- Abstract Class MoveType:
+	+ 4 fields: StartX, StartY, EndX, EndY representing the initial location and the final location of a movement. 
+	+ Override string ToString(): return the name of the move (For example: Capture, Build, Move, Shoot, Demolish, Convince, Swap).
+	+ Constructor to define and create a new move.
+	+ Virtual void MakeMove(): make move directly to a specific Board.
+
+- Derived Class Move from Base Class MoveType:
+	+ Inherite the base constructor.
+	+ Overide ToString() and MakeMove() according to the name and properties of Move (just relocate a Piece into a new location). 
+
+- Derived Class Capture from Base Class MoveType:
+	+ Inherite the base constructor.
+	+ Overide ToString() and MakeMove() according to the name and properties of Capture (attack an enemy Piece and remove it from the Board, relocate ally Piece). 
+
+- Derived Class Swap from Base Class MoveType:
+	+ Inherite the base constructor.
+	+ Overide ToString() and MakeMove() according to the name and properties of Swap (swap locations of two ally Pieces).
+
+- Derived Class Convince from Base Class MoveType:
+	+ Inherite the base constructor.
+	+ Overide ToString() and MakeMove() according to the name and properties of Convince (change a Piece from enemy to ally).
+
+- Derived Class Build from Base Class MoveType:
+	+ Inherite the base constructor.
+	+ Overide ToString() and MakeMove() according to the name and properties of Build (build a wall at a specific location).
+
+- Derived Class Shoot from Base Class MoveType:
+	+ Inherite the base constructor.
+	+ Overide ToString() and MakeMove() according to the name and properties of Swap (similar to Capture, however ally Piece is not relocated).
+
+- Derived Class Demolish from Base Class MoveType:
+	+ Inherite the base constructor.
+	+ Overide ToString() and MakeMove() according to the name and properties of Demolish (remove a Wall Piece, and move ally Piece to the Wall's location).
+
+
+
+
+
+
+
+
+
